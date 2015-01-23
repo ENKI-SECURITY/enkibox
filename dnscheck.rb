@@ -1,12 +1,13 @@
 #!/usr/bin/env ruby
 #
-# DNSChecker made in the scope of some project
+# DNSChecker
 #
-# Copyright (c) 2013 DNSChecker (www.enki-security.com - Y Kourosh BN)
+# Copyright (c) 2012 Enki Box (www.enki-security.com - Y Kourosh BN)
 #
-# This program is the property of ENKI SECURITY - Kouros.Darius - Y BN.
-# You may use it for free
+# This program is the property of ENKI SECURITY - ENKI BOX - Kouros.Darius
+# You may use it for free and do what you want with it as we are no responsible of what's you are going to do
 #
+# This program is distributed in the scope of the use for experimental purpose
 # We provide ANY WARRANTY, ANY SUPPORT for a use which is not compliant to our policies
 
 require 'prawn'
