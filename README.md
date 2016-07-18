@@ -20,3 +20,9 @@ enkiscan.rb -h for help
 Ruby DNS checker, a tool which generate a pdf file listing all domain name that you own with full configuration details retrieved by the dnschecker.
 
 dnscheck.rb -h for help
+
+# enkidtdl
+
+Python Directory Listing/Directory Traversal automatic script.
+
+enkidtdl.py [url/IP/Subnet] [dict]
