@@ -59,6 +59,6 @@ def scanhost():
 def httpservicecheck(svports):
 
 # Execute the DT/DL
-def dtdl(urllst):
+def dtdl(urllst, ports):
 
 # Main
