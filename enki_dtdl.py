@@ -21,12 +21,19 @@ subprocess.call('clear', shell=True)
 def defhost():
     try:
         ip = raw_input("[*] Enter the subnet address or IP address of the target: ")
-        int(low_port) = raw_input("[*] Enter Minimum port number to start from (leave blank for default all 65535): ")
-
-        if not low_port:
-            high_port = 65535
-        else:
+        
+        rep = raw_input("[*] For port scanning range type 'r' or 's' for single port scanning: ")
+        
+        if rep in "s":
+            int(single_port) = raw_input("[*] SINGLE PORT MODE - Enter the port number you wish to scan: ")
+            
+        else if rep in "r":
+            int(low_port) = raw_input("[*] Enter Minimum port number to start from: ")
             int(high_port) = raw_input("[*] Enter Highest port number to end at: ")
+            
+        else if not rep:
+            print "\n[*] Scanning all 65535 ports from 80"
+            all_ports = 65535
 
         try:
             if low_port >= 0 and high_port >= 0 and high_port >= low_port:
