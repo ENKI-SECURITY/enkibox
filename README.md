@@ -23,6 +23,6 @@ dnscheck.rb -h for help
 
 # enkidtdl
 
-Python Directory Listing/Directory Traversal automatic script.
+Python automated Directory Listing/Directory Traversal script.
 
 enki_dtdl.py [url/IP/Subnet] [port] [dict]
