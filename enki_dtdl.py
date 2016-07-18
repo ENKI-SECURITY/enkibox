@@ -18,7 +18,7 @@ from time import strftime
 subprocess.call('clear', shell=True)
 
 # Scan host function
-def scanhost():
+def defhost():
     try:
         ip = raw_input("[*] Enter the subnet address or IP address of the target: ")
         int(low_port) = raw_input("[*] Enter Minimum port number to start from (leave blank for default all 65535): ")
@@ -47,17 +47,11 @@ def scanhost():
             sys.exit(1)
 
     ports = range(int(lowport), int(high_port)+1)
-    schedule = datetime.now()
-    SYNACK = 0x12
-    RSTACK = 0x14
-
-    srcport = RandShort()
-    conf.verb = 0
-    SYNACKP = sr1(IP(dest = ip)/TCP(sport = srcport, dport = ports, flags = "S"))
 
 # Check for available http service on any port
 def httpservicecheck(svports):
-
+    schedule = datetime.now()
+    
 # Execute the DT/DL
 def dtdl(urllst, dict):
 
