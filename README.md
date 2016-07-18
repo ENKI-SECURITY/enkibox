@@ -25,4 +25,4 @@ dnscheck.rb -h for help
 
 Python Directory Listing/Directory Traversal automatic script.
 
-enkidtdl.py [url/IP/Subnet] [dict]
+enkidtdl.py [url/IP/Subnet] [port] [dict]
