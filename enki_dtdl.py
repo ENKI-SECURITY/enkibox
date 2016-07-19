@@ -1,4 +1,4 @@
-!/usr/bin/env python
+#!/usr/bin/env python
 
 # ENKI_DTDL
 # Python Directory Traversal / Directory Listing program
