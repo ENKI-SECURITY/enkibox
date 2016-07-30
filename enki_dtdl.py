@@ -10,14 +10,17 @@ from logging import getLogger, ERROR
 getLogger("scapy.runtime").setLevel(logging.ERROR)
 from scapy.all import *
 
-import subprocess
+import httplib
 import sys
+import threading
+import subprocess
+import random
 from datetime import datetime
 from time import strftime
 
 subprocess.call('clear', shell=True)
 
-# Scan host function
+# Scan host function - will be moved on main function - no need to have a function for that
 def defhost():
     try:
         ip = raw_input("[*] Enter the subnet address or IP address of the target: ")
@@ -56,10 +59,20 @@ def defhost():
     ports = range(int(lowport), int(high_port)+1)
 
 # Check for available http service on any port
-def httpservicecheck(svports):
+def httpservicecheck(target, svports):
     schedule = datetime.now()
     
+    try:
+        c = httplib.HTTPConnection(target, svports)
+        c.request("GET", "/");
+        st = c.getresponse()
+        print st.status st.reason
+        c.close()
+    except Exception, e:
+        print e
+        pass
+
 # Execute the DT/DL
-def dtdl(urllst, dict):
+def dtdl(dirlst):
 
 # Main
