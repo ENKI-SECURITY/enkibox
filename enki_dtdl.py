@@ -22,6 +22,9 @@ subprocess.call('clear', shell=True)
 
 # Scan host function - will be moved on main function - no need to have a function for that
 def defhost():
+    schedule = datetime.now()
+    print schedule
+
     try:
         ip = raw_input("[*] Enter the subnet address or IP address of the target: ")
         
@@ -60,8 +63,6 @@ def defhost():
 
 # Check for available http service on any port
 def httpservicecheck(target, svports):
-    schedule = datetime.now()
-    
     try:
         c = httplib.HTTPConnection(target, svports)
         c.request("GET", "/");
