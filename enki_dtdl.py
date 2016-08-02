@@ -22,12 +22,14 @@ from datetime import datetime
 from time import strftime
 
 subprocess.call('clear', shell=True)
-debug = True
+debug = False
 timeout = 1
 
 def portrange(lp):
     if "-" in lp:
         return xrange(int(lp.split("-")[0]), int(lp.split("-")[1]))
+    if "," in lp:
+        return lp.split(",")
     if "" in lp:
         return list((80, 443))
     else:
@@ -42,6 +44,8 @@ def checkport(host, port):
             print "[+] GET " + 'http://' + target
         requests.get("http://" + target, timeout=timeout)
         return "http"
+    except KeyboardInterrupt:
+        return exit(0)
     except:
         try:
             if debug:
@@ -63,18 +67,32 @@ def dtdl(httpdalive, dico):
 
 
 def main():
+    inputhost = list()
     hosts = list()
     httpdalive = list()
 
-    input1 = raw_input("[*] Enter the IP address or subnet address of the target: ")
+    inputd = raw_input("[*] Enable verbose mode (Yes/No): ")
+    debug = True if inputd in "Yes" else False
+    input1 = raw_input("[*] Enter the IP address or subnet address or the URL of the target (leave blank to use a list of host): ")
+    inputhost.append(input1)
+
+    if input1 in "":
+        input11 = raw_input("[*] Enter the filename containing ip or url: ")
+        with open(input11) as filename:
+            for input1 in filename:
+                inputhost.append(input1.strip())
+
+    if debug:
+        print "[+] Host to scan : " + str(inputhost)
     input2 = raw_input("[*] Enter single port or min-max ports (blank for default): ")
     input3 = raw_input("[*] Enter dictionary file: ")
 
-    try:
-        for ip in IPNetwork(input1):
-            hosts.append(ip)
-    except AddrFormatError:
-        hosts.append(str(input1))
+    for input1 in inputhost:
+        try:
+            for ip in IPNetwork(input1):
+                hosts.append(ip)
+        except AddrFormatError:
+            hosts.append(str(input1))
 
     for host in hosts:
         for port in portrange(input2):
