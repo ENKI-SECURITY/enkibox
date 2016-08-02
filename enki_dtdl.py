@@ -6,10 +6,13 @@
 # Written by Youssef - Toufik
 # ENKI - 2016
 
-from logging import getLogger, ERROR
-getLogger("scapy.runtime").setLevel(logging.ERROR)
-from scapy.all import *
+# requirement.txt
+# pip install requests netaddr
 
+
+import requests
+from netaddr import IPNetwork, AddrFormatError
+from logging import getLogger, ERROR
 import httplib
 import sys
 import threading
@@ -19,61 +22,70 @@ from datetime import datetime
 from time import strftime
 
 subprocess.call('clear', shell=True)
+debug = True
+timeout = 1
 
-# Scan host function - will be moved on main function - no need to have a function for that
-def defhost():
-    schedule = datetime.now()
-    print schedule
+def portrange(lp):
+    if "-" in lp:
+        return xrange(int(lp.split("-")[0]), int(lp.split("-")[1]))
+    if "" in lp:
+        return list((80, 443))
+    else:
+        return list(int(lp))
 
+
+# Check for available http service on port
+def checkport(host, port):
+    target = str(host) + ':' + str(port)
     try:
-        ip = raw_input("[*] Enter the subnet address or IP address of the target: ")
-        
-        rep = raw_input("[*] For port scanning range type 'r' or 's' for single port scanning: ")
-        
-        if rep in "s":
-            int(single_port) = raw_input("[*] SINGLE PORT MODE - Enter the port number you wish to scan: ")
-            
-        else if rep in "r":
-            int(low_port) = raw_input("[*] Enter Minimum port number to start from: ")
-            int(high_port) = raw_input("[*] Enter Highest port number to end at: ")
-            
-        else if not rep:
-            print "\n[*] Scanning all 65535 ports from 80"
-            all_ports = 65535
-
+        if debug:
+            print "[+] GET " + 'http://' + target
+        requests.get("http://" + target, timeout=timeout)
+        return "http"
+    except:
         try:
-            if low_port >= 0 and high_port >= 0 and high_port >= low_port:
-                pass
-            else:
-                print "\n[!] Invalid range of ports"
-                print "\n[!] Exiting"
-                sys.exit(1)
+            if debug:
+                print "[+] GET " + 'https://' + target
+            requests.get("https://" + target, timeout=timeout)
+            return "https"
+        except:
+            return None
 
-        except Exception:
-            print "\n[!] An error has occured"
-            print "\n[!] Exiting"
-            sys.exit(1)
 
-        except KeyboardInterrupt:
-            print "\n[*] User interruption caughted"
-            print "\n[*] Exiting"
-            sys.exit(1)
+def dtdl(httpdalive, dico):
+    with open(dico) as f:
+        for path in f:
+            for host in httpdalive:
+                path = path.strip()
+                code = str(requests.get(host + "/" + path).status_code)
+                if "404" != code:
+                    print host + "/" +  path + "/" + " " + code
 
-    ports = range(int(lowport), int(high_port)+1)
 
-# Check for available http service on any port
-def httpservicecheck(target, svports):
+def main():
+    hosts = list()
+    httpdalive = list()
+
+    input1 = raw_input("[*] Enter the IP address or subnet address of the target: ")
+    input2 = raw_input("[*] Enter single port or min-max ports (blank for default): ")
+    input3 = raw_input("[*] Enter dictionary file: ")
+
     try:
-        c = httplib.HTTPConnection(target, svports)
-        c.request("GET", "/");
-        st = c.getresponse()
-        print st.status st.reason
-        c.close()
-    except Exception, e:
-        print e
-        pass
+        for ip in IPNetwork(input1):
+            hosts.append(ip)
+    except AddrFormatError:
+        hosts.append(str(input1))
 
-# Execute the DT/DL
-def dtdl(dirlst):
+    for host in hosts:
+        for port in portrange(input2):
+            check = str(checkport(host, port))
+            if check in ["http", "https"]:
+                target = str(check) + "://" + str(host) + ":" + str(port)
+                httpdalive.append(target)
+    if debug:
+        print "[+] Hosts alive :" + str(httpdalive)
+    dtdl(httpdalive, input3)
 
 # Main
+if __name__=="__main__":
+    main()
