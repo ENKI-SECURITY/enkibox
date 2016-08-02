@@ -12,14 +12,7 @@
 
 import requests
 from netaddr import IPNetwork, AddrFormatError
-from logging import getLogger, ERROR
-import httplib
-import sys
-import threading
 import subprocess
-import random
-from datetime import datetime
-from time import strftime
 
 subprocess.call('clear', shell=True)
 debug = False
