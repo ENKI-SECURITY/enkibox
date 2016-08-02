@@ -15,8 +15,8 @@ from netaddr import IPNetwork, AddrFormatError
 import subprocess
 
 subprocess.call('clear', shell=True)
-debug = False
 timeout = 1
+debug = False
 
 def portrange(lp):
     if "-" in lp:
@@ -60,6 +60,7 @@ def dtdl(httpdalive, dico):
 
 
 def main():
+    global debug
     inputhost = list()
     hosts = list()
     httpdalive = list()
